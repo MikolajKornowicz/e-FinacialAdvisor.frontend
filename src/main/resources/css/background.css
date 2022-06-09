@@ -1,0 +1,8 @@
+body
+{
+    background-image: url("money.jpg");
+    background-color: #f7f7f7;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    align-content: flex-start;
+}
