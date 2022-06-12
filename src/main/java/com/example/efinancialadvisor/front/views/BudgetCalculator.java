@@ -1,9 +1,12 @@
 package com.example.efinancialadvisor.front.views;
 
 import com.example.efinancialadvisor.front.backend.BackendClient;
+import com.fasterxml.jackson.core.io.CharTypes;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.charts.Chart;
+import com.vaadin.flow.component.charts.model.*;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -21,6 +24,7 @@ public class BudgetCalculator extends VerticalLayout {
     private final BackendClient client = new BackendClient(new RestTemplate());
 
     private Button buttonPostBudget = new Button();
+    private Button buttonShowChart = new Button();
 
     private BigDecimal income = new BigDecimal(BigInteger.ZERO);
     private BigDecimal expenses = new BigDecimal(BigInteger.ZERO);
@@ -46,8 +50,10 @@ public class BudgetCalculator extends VerticalLayout {
     private TextField textFieldPersonalInsurance = new TextField();
     private TextField textFieldLoans = new TextField();
 
-    public BudgetCalculator() {
+    private Chart chartBudget = new Chart(ChartType.PIE);
 
+
+    public BudgetCalculator() {
 
         textFieldIncome.setTitle("Monthly income");
         textFieldRent.setTitle("Rent");
@@ -88,9 +94,13 @@ public class BudgetCalculator extends VerticalLayout {
         textFieldPersonalInsurance.setLabel("Personal insurance");
         textFieldLoans.setLabel("Loans");
         textFieldOther.setLabel("Other expenses");
+        buttonPostBudget.setText("Confirm");
+        buttonShowChart.setText("Show Chart");
+
+
 
         add(textFieldRent, textFieldUtilities, textFieldPhone, textFieldGas, textFieldFood, textFieldCosmetics, textFieldClothes, textFieldEducation,
-                textFieldSports, textFieldHobby, textFieldAlimony, textFieldHealthcare, textFieldHoliday, textFieldCarInsurance, textFieldHouseInsurance, textFieldPersonalInsurance,textFieldLoans, textFieldOther, buttonPostBudget);
+                textFieldSports, textFieldHobby, textFieldAlimony, textFieldHealthcare, textFieldHoliday, textFieldCarInsurance, textFieldHouseInsurance, textFieldPersonalInsurance,textFieldLoans, textFieldOther, buttonPostBudget, buttonShowChart);
 
         buttonPostBudget.addClickListener(event -> {
             client.postBudget(textFieldRent.getValue(), textFieldUtilities.getValue(), textFieldPhone.getValue(),
@@ -99,6 +109,39 @@ public class BudgetCalculator extends VerticalLayout {
                     textFieldHealthcare.getValue(), textFieldHoliday.getValue(), textFieldCarInsurance.getValue(), textFieldHouseInsurance.getValue(),
                     textFieldPersonalInsurance.getValue(), textFieldLoans.getValue(), textFieldOther.getValue());
                 });
+
+        buttonShowChart.addClickListener(event -> {
+            remove(chartBudget);
+
+            DataSeries data = new DataSeries();
+            PlotOptionsPie options = new PlotOptionsPie();
+            add(chartBudget);
+            Configuration conf = chartBudget.getConfiguration();
+            conf.setTitle("Expenses");
+            options.setCenter("50%", "50%");
+            options.setSize("100%");
+            conf.setPlotOptions(options);
+
+            data.add(new DataSeriesItem("Rent", Integer.parseInt(textFieldRent.getValue())));
+            data.add(new DataSeriesItem("Utilities", Integer.parseInt(textFieldUtilities.getValue())));
+            data.add(new DataSeriesItem("Phone and Internet", Integer.parseInt(textFieldPhone.getValue())));
+            data.add(new DataSeriesItem("Gas and tickets", Integer.parseInt(textFieldGas.getValue())));
+            data.add(new DataSeriesItem("Food", Integer.parseInt(textFieldFood.getValue())));
+            data.add(new DataSeriesItem("Cosmetics", Integer.parseInt(textFieldCosmetics.getValue())));
+            data.add(new DataSeriesItem("Clothes", Integer.parseInt(textFieldClothes.getValue())));
+            data.add(new DataSeriesItem("Education", Integer.parseInt(textFieldEducation.getValue())));
+            data.add(new DataSeriesItem("Sports", Integer.parseInt(textFieldSports.getValue())));
+            data.add(new DataSeriesItem("Hobby", Integer.parseInt(textFieldHobby.getValue())));
+            data.add(new DataSeriesItem("Alimony", Integer.parseInt(textFieldAlimony.getValue())));
+            data.add(new DataSeriesItem("Healthcare", Integer.parseInt(textFieldHealthcare.getValue())));
+            data.add(new DataSeriesItem("Holidays", Integer.parseInt(textFieldHoliday.getValue())));
+            data.add(new DataSeriesItem("Car insurance", Integer.parseInt(textFieldCarInsurance.getValue())));
+            data.add(new DataSeriesItem("House insurance", Integer.parseInt(textFieldHouseInsurance.getValue())));
+            data.add(new DataSeriesItem("Personal insurance", Integer.parseInt(textFieldPersonalInsurance.getValue())));
+            data.add(new DataSeriesItem("Loans", Integer.parseInt(textFieldLoans.getValue())));
+            data.add(new DataSeriesItem("I've earned it", Integer.parseInt(textFieldOther.getValue())));
+            conf.addSeries(data);
+        });
     }
 
 

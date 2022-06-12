@@ -1,10 +1,8 @@
 package com.example.efinancialadvisor.front.backend;
 
 import com.example.efinancialadvisor.front.domain.BudgetDto;
-import com.example.efinancialadvisor.front.views.Budget;
+import com.example.efinancialadvisor.front.domain.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.atmosphere.interceptor.AtmosphereResourceStateRecovery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -36,6 +34,7 @@ public class BackendClient {
                             String holidays, String carInsurance, String houseInsurance, String personalInsurance, String loans, String other){
 
         BudgetDto budgetDto = new BudgetDto();
+        budgetDto.setUserId(33L);
         budgetDto.setRent(Integer.parseInt(rent));
         budgetDto.setUtilities(Integer.parseInt(utilities));
         budgetDto.setPhone(Integer.parseInt(phone));
@@ -55,6 +54,12 @@ public class BackendClient {
         budgetDto.setLoans(Integer.parseInt(loans));
         budgetDto.setOther(Integer.parseInt(other));
 
-        restTemplate.postForObject("http://localhost:8081/v1/budget",BudgetDto.class, BudgetDto.class, budgetDto);
+        restTemplate.postForObject("http://localhost:8081/v1/budget", budgetDto, BudgetDto.class);
+    }
+
+    public String getCredentials(UserDto userDto){
+        String reply = restTemplate.postForObject("http://localhost:8081/v1/budget/login", userDto, UserDto.class).toString();
+        System.out.println(reply);
+        return reply;
     }
 }

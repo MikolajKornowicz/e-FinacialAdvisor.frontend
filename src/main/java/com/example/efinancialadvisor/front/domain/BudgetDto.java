@@ -54,6 +54,16 @@ public class BudgetDto {
     private int loans;
     @JsonProperty("other")
     private int other;
+    @JsonProperty("username")
+    private String username;
+    @JsonProperty("password")
+    private String password;
+    @JsonProperty("email")
+    private String email;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("surname")
+    private String surname;
 
 
 
