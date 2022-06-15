@@ -6,7 +6,4 @@ import org.springframework.stereotype.Component;
 
 public class BackendConfig {
 
-    private String getExpenses (){
-        return "http://localhost:8081/v1/budget/expenses/29";
-    }
 }

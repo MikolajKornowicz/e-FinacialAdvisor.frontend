@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Route("budgetcalculator")
@@ -53,9 +55,11 @@ public class BudgetCalculator extends VerticalLayout {
     private Chart chartBudget = new Chart(ChartType.PIE);
 
 
+
+
     public BudgetCalculator() {
 
-        textFieldIncome.setTitle("Monthly income");
+        textFieldIncome.setTitle("Total monthly income");
         textFieldRent.setTitle("Rent");
         textFieldUtilities.setTitle("Utilities");
         textFieldPhone.setTitle("Phone, Internet, TV");
@@ -75,7 +79,7 @@ public class BudgetCalculator extends VerticalLayout {
         textFieldLoans.setTitle("Loans");
         textFieldOther.setTitle("Other expenses");
 
-        textFieldIncome.setLabel("Monthly income");
+        textFieldIncome.setLabel("Total monthly income");
         textFieldRent.setLabel("Rent");
         textFieldUtilities.setLabel("Utilities");
         textFieldPhone.setLabel("Phone, Internet, TV");
@@ -99,11 +103,12 @@ public class BudgetCalculator extends VerticalLayout {
 
 
 
-        add(textFieldRent, textFieldUtilities, textFieldPhone, textFieldGas, textFieldFood, textFieldCosmetics, textFieldClothes, textFieldEducation,
-                textFieldSports, textFieldHobby, textFieldAlimony, textFieldHealthcare, textFieldHoliday, textFieldCarInsurance, textFieldHouseInsurance, textFieldPersonalInsurance,textFieldLoans, textFieldOther, buttonPostBudget, buttonShowChart);
+        add(textFieldIncome, textFieldRent, textFieldUtilities, textFieldPhone, textFieldGas, textFieldFood, textFieldCosmetics, textFieldClothes, textFieldEducation,
+                textFieldSports, textFieldHobby, textFieldAlimony, textFieldHealthcare, textFieldHoliday, textFieldCarInsurance, textFieldHouseInsurance,
+                textFieldPersonalInsurance,textFieldLoans, textFieldOther, buttonPostBudget, buttonShowChart);
 
         buttonPostBudget.addClickListener(event -> {
-            client.postBudget(textFieldRent.getValue(), textFieldUtilities.getValue(), textFieldPhone.getValue(),
+            client.postBudget(textFieldIncome.getValue(), textFieldRent.getValue(), textFieldUtilities.getValue(), textFieldPhone.getValue(),
                     textFieldGas.getValue(), textFieldFood.getValue(), textFieldCosmetics.getValue(), textFieldClothes.getValue(),
                     textFieldEducation.getValue(), textFieldSports.getValue(), textFieldHobby.getValue(), textFieldAlimony.getValue(),
                     textFieldHealthcare.getValue(), textFieldHoliday.getValue(), textFieldCarInsurance.getValue(), textFieldHouseInsurance.getValue(),
@@ -139,7 +144,7 @@ public class BudgetCalculator extends VerticalLayout {
             data.add(new DataSeriesItem("House insurance", Integer.parseInt(textFieldHouseInsurance.getValue())));
             data.add(new DataSeriesItem("Personal insurance", Integer.parseInt(textFieldPersonalInsurance.getValue())));
             data.add(new DataSeriesItem("Loans", Integer.parseInt(textFieldLoans.getValue())));
-            data.add(new DataSeriesItem("I've earned it", Integer.parseInt(textFieldOther.getValue())));
+            data.add(new DataSeriesItem("Other", Integer.parseInt(textFieldOther.getValue())));
             conf.addSeries(data);
         });
     }

@@ -12,6 +12,6 @@ public class Authenticator {
     private BackendClient client;
 
     public boolean authenticate (UserDto userDto){
-        return client.getCredentials(userDto).equals("true");
+        return !client.getCredentials(userDto).getUsername().equals("UnknownUser") && client.getCredentials(userDto).getPassword().equals("UnknownUser");
     }
 }
