@@ -108,7 +108,7 @@ public class BudgetCalculator extends VerticalLayout {
                 textFieldPersonalInsurance,textFieldLoans, textFieldOther, buttonPostBudget, buttonShowChart);
 
         buttonPostBudget.addClickListener(event -> {
-            client.postBudget(textFieldIncome.getValue(), textFieldRent.getValue(), textFieldUtilities.getValue(), textFieldPhone.getValue(),
+            client.putBudget(textFieldIncome.getValue(), textFieldRent.getValue(), textFieldUtilities.getValue(), textFieldPhone.getValue(),
                     textFieldGas.getValue(), textFieldFood.getValue(), textFieldCosmetics.getValue(), textFieldClothes.getValue(),
                     textFieldEducation.getValue(), textFieldSports.getValue(), textFieldHobby.getValue(), textFieldAlimony.getValue(),
                     textFieldHealthcare.getValue(), textFieldHoliday.getValue(), textFieldCarInsurance.getValue(), textFieldHouseInsurance.getValue(),

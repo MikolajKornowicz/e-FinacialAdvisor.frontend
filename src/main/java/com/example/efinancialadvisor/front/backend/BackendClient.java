@@ -5,6 +5,7 @@ import com.example.efinancialadvisor.front.domain.Profile;
 import com.example.efinancialadvisor.front.domain.UserDto;
 import com.example.efinancialadvisor.front.views.LogIn;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -50,7 +51,7 @@ public class BackendClient {
     }
 
 
-    public void postBudget (String income, String rent, String utilities, String phone, String gas, String food, String cosmetics,
+    public void putBudget (String income, String rent, String utilities, String phone, String gas, String food, String cosmetics,
                             String clothes, String education, String sports, String hobby, String alimony, String healthcare,
                             String holidays, String carInsurance, String houseInsurance, String personalInsurance, String loans, String other){
 
@@ -82,7 +83,7 @@ public class BackendClient {
         budgetDto.setEmail(LogIn.profile.getEmail());
         budgetDto.setName(LogIn.profile.getName());
         budgetDto.setSurname(LogIn.profile.getSurname());
-        restTemplate.postForObject("http://localhost:8081/v1/budget", budgetDto, BudgetDto.class);
+        restTemplate.put("http://localhost:8081/v1/budget", budgetDto, BudgetDto.class);
     }
 
     public UserDto getCredentials(UserDto userDto){
@@ -94,4 +95,38 @@ public class BackendClient {
         BudgetDto budgetDto = restTemplate.getForObject("http://localhost:8081/v1/budget/user/" + username, BudgetDto.class);
         return budgetDto;
     }
+
+    public void postBudget (String username, String password, String email, String name, String surname){
+
+        BudgetDto budgetDto = new BudgetDto();
+        budgetDto.setIncome(0);
+        budgetDto.setExpenses(0);
+        budgetDto.setNetIncome(0);
+        budgetDto.setRent(0);
+        budgetDto.setUtilities(0);
+        budgetDto.setPhone(0);
+        budgetDto.setGas(0);
+        budgetDto.setFood(0);
+        budgetDto.setCosmetics(0);
+        budgetDto.setClothes(0);
+        budgetDto.setEducation(0);
+        budgetDto.setSports(0);
+        budgetDto.setHobby(0);
+        budgetDto.setAlimony(0);
+        budgetDto.setHealthcare(0);
+        budgetDto.setHolidays(0);
+        budgetDto.setCar_insurance(0);
+        budgetDto.setHouse_insurance(0);
+        budgetDto.setPersonal_insurance(0);
+        budgetDto.setLoans(0);
+        budgetDto.setOther(0);
+        budgetDto.setUsername(username);
+        budgetDto.setPassword(password);
+        budgetDto.setEmail(email);
+        budgetDto.setName(name);
+        budgetDto.setSurname(surname);
+        restTemplate.postForObject("http://localhost:8081/v1/budget/new", budgetDto, BudgetDto.class);
+
+    }
+
 }
